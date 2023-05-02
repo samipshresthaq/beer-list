@@ -1,0 +1,15 @@
+<div
+  class="card-wrapper"
+  *ngFor="let item of items; index as idx; trackBy: trackByItems"
+>
+  <div class="card p-2 p-md-4" [class.mt-4]="idx != 0">
+    <img class="card-img" [src]="item.image_url" [alt]="item.name" />
+    <div class="card-body">
+      <h5 class="card-title">{{ item.name }}</h5>
+      <strong
+        ><span class="text-gold my-3">{{ item.tagline }}</span></strong
+      >
+      <p class="card-text">{{ item.description }}</p>
+    </div>
+  </div>
+</div>
