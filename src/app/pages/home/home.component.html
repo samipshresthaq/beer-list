@@ -1,0 +1,21 @@
+<div class="container">
+  <h2>Beer Admin</h2>
+  <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+    <li [ngbNavItem]="1">
+      <button ngbNavLink>All Beers</button>
+      <ng-template ngbNavContent>
+        <ng-container *ngIf="items$ | async as items">
+          <app-item-list [items]="items"></app-item-list>
+        </ng-container>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="2">
+      <button ngbNavLink>My Beers</button>
+      <ng-template ngbNavContent>
+        <app-empty-list></app-empty-list>
+      </ng-template>
+    </li>
+  </ul>
+
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+</div>
