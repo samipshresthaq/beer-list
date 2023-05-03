@@ -4,10 +4,10 @@ export interface BeerInterface {
   tagline: string;
   description: string;
   image_url: string;
-  ingredients: { [type: string]: Array<Ingredients> };
+  ingredients: { [type: string]: Array<BeerIngredients> };
 }
 
-interface Ingredients {
+export interface BeerIngredients {
   name: string;
   amount: {
     value: number;

@@ -3,7 +3,13 @@
   *ngFor="let item of items; index as idx; trackBy: trackByItems"
 >
   <div class="card p-2 p-md-4" [class.mt-4]="idx != 0">
-    <img class="card-img" [src]="item.image_url" [alt]="item.name" />
+    <img
+      class="card-img"
+      [src]="item.image_url"
+      [alt]="item.name"
+      placement="top"
+      [ngbTooltip]="item.ingredients | ingredientPipe"
+    />
     <div class="card-body">
       <h5 class="card-title">{{ item.name }}</h5>
       <strong
