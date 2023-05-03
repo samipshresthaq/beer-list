@@ -1,38 +1,45 @@
 <div class="container">
   <h2>Beer Admin</h2>
-  <ul
-    ngbNav
-    #nav="ngbNav"
-    [(activeId)]="active"
-    [destroyOnHide]="false"
-    class="nav-tabs"
-  >
-    <li [ngbNavItem]="1">
-      <button ngbNavLink>All Beers</button>
-      <ng-template ngbNavContent>
-        <ng-container *ngIf="items$ | async as items">
-          <app-item-list [items]="items"></app-item-list>
 
-          <div class="load-more my-5">
-            <button
-              type="button"
-              class="btn btn-link"
-              [class.loading]="isloading"
-              (click)="!isloading && loadMoreBeers()"
-            >
-              <strong *ngIf="!isloading; else loading">Load More</strong>
-            </button>
-          </div>
-        </ng-container>
-      </ng-template>
-    </li>
-    <li [ngbNavItem]="2">
-      <button ngbNavLink>My Beers</button>
-      <ng-template ngbNavContent>
-        <app-empty-list (addItem)="onAddItem()"></app-empty-list>
-      </ng-template>
-    </li>
-  </ul>
+  <div class="d-flex">
+    <ul
+      ngbNav
+      #nav="ngbNav"
+      [(activeId)]="active"
+      [destroyOnHide]="false"
+      class="nav-tabs"
+    >
+      <li [ngbNavItem]="1">
+        <button ngbNavLink>All Beers</button>
+        <ng-template ngbNavContent>
+          <ng-container *ngIf="items$ | async as items">
+            <app-item-list [items]="items"></app-item-list>
+
+            <div class="load-more my-5">
+              <button
+                type="button"
+                class="btn btn-link"
+                [class.loading]="isloading"
+                (click)="!isloading && loadMoreBeers()"
+              >
+                <strong *ngIf="!isloading; else loading">Load More</strong>
+              </button>
+            </div>
+          </ng-container>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="2">
+        <button ngbNavLink>My Beers</button>
+        <ng-template ngbNavContent>
+          <app-empty-list (addItem)="onAddItem()"></app-empty-list>
+        </ng-template>
+      </li>
+    </ul>
+
+    <button class="btn btn-primary btn-sm" type="submit" (click)="onAddItem()">
+      Add a new beer
+    </button>
+  </div>
 
   <div [ngbNavOutlet]="nav" class="mt-2"></div>
 </div>
