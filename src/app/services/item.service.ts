@@ -11,9 +11,9 @@ const API = 'https://api.punkapi.com/v2/beers';
 export class ItemService {
   constructor(private http: HttpClient) {}
 
-  getItems(page?: number, limit?: number) {
-    const pagination = page && limit ? `?page=${page}&per_page=${limit}` : '';
+  getItems(page: number = 1, limit: number = 10) {
+    const pagination = page && limit ? `?page=1&per_page=${page * limit}` : '';
     const requestURL = `${API}${pagination}`;
-    return this.http.get<BeerInterface>(requestURL);
+    return this.http.get<Array<BeerInterface>>(requestURL);
   }
 }

@@ -6,6 +6,17 @@
       <ng-template ngbNavContent>
         <ng-container *ngIf="items$ | async as items">
           <app-item-list [items]="items"></app-item-list>
+
+          <div class="load-more my-5">
+            <button
+              *ngIf="!isloading; else loading"
+              type="button"
+              class="btn btn-link"
+              (click)="loadMoreBeers()"
+            >
+              <strong>Load More</strong>
+            </button>
+          </div>
         </ng-container>
       </ng-template>
     </li>
@@ -19,3 +30,5 @@
 
   <div [ngbNavOutlet]="nav" class="mt-2"></div>
 </div>
+
+<ng-template #loading> Loading... </ng-template>

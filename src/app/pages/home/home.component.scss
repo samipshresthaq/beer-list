@@ -2,7 +2,24 @@
   color: rgb(175, 174, 174);
   cursor: pointer;
 
-  .nav-active {
+  &.active {
     color: #000;
+  }
+}
+
+.load-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .btn {
+    font-size: 14px;
+    text-decoration: none;
+
+    &::after {
+      content: "∨";
+      padding-left: 8px;
+      font-weight: bold;
+    }
   }
 }
