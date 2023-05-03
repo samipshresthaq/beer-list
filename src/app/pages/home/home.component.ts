@@ -25,7 +25,7 @@ enum Tabs {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit {
-  public active = Tabs.ALL_BEERS;
+  public active = Tabs.MY_BEERS;
   public isloading = false;
   public items$: Observable<Array<BeerInterface>>;
   private currentPage$: BehaviorSubject<number> = new BehaviorSubject(1);
@@ -45,12 +45,12 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  ngOnDestroy(): void {
-    console.log('Destroyed');
-  }
-
   loadMoreBeers() {
     this.isloading = true;
     this.currentPage$.next(this.currentPage$.value + 1);
+  }
+
+  onAddItem() {
+    console.log('OPEN MODAL');
   }
 }

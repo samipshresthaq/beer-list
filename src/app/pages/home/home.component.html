@@ -29,7 +29,7 @@
     <li [ngbNavItem]="2">
       <button ngbNavLink>My Beers</button>
       <ng-template ngbNavContent>
-        <app-empty-list></app-empty-list>
+        <app-empty-list (addItem)="onAddItem()"></app-empty-list>
       </ng-template>
     </li>
   </ul>
