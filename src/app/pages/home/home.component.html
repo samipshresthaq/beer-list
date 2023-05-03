@@ -1,6 +1,12 @@
 <div class="container">
   <h2>Beer Admin</h2>
-  <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+  <ul
+    ngbNav
+    #nav="ngbNav"
+    [(activeId)]="active"
+    [destroyOnHide]="false"
+    class="nav-tabs"
+  >
     <li [ngbNavItem]="1">
       <button ngbNavLink>All Beers</button>
       <ng-template ngbNavContent>
@@ -9,12 +15,12 @@
 
           <div class="load-more my-5">
             <button
-              *ngIf="!isloading; else loading"
               type="button"
               class="btn btn-link"
-              (click)="loadMoreBeers()"
+              [class.loading]="isloading"
+              (click)="!isloading && loadMoreBeers()"
             >
-              <strong>Load More</strong>
+              <strong *ngIf="!isloading; else loading">Load More</strong>
             </button>
           </div>
         </ng-container>
@@ -31,4 +37,4 @@
   <div [ngbNavOutlet]="nav" class="mt-2"></div>
 </div>
 
-<ng-template #loading> Loading... </ng-template>
+<ng-template #loading> <strong> Loading... </strong></ng-template>

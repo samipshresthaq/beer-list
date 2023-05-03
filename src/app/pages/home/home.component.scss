@@ -16,7 +16,7 @@
     font-size: 14px;
     text-decoration: none;
 
-    &::after {
+    &:not(.loading):after {
       content: "∨";
       padding-left: 8px;
       font-weight: bold;

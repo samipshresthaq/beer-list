@@ -21,7 +21,7 @@ $hover-color: #f3f8fd;
 
   .card-img {
     height: 134px;
-    width: 60px;
+    width: 100px;
     object-fit: contain;
   }
 
@@ -42,22 +42,11 @@ $hover-color: #f3f8fd;
   }
 }
 
-@media screen and (max-width: 768px) {
-  .card {
-    .card-text {
-      -webkit-line-clamp: 2;
-    }
-  }
-}
-
 @media screen and (min-width: 768px) {
   .card {
     .card-img {
       width: 150px;
       height: 150px;
-    }
-    .card-text {
-      -webkit-line-clamp: 2;
     }
   }
 }
@@ -70,6 +59,12 @@ $hover-color: #f3f8fd;
 
     &:nth-child(2n) {
       margin-right: 0;
+    }
+  }
+
+  .card {
+    .card-text {
+      -webkit-line-clamp: 2;
     }
   }
 }
