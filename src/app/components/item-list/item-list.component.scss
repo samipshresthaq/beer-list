@@ -7,7 +7,7 @@ $hover-color: #f3f8fd;
   border: none;
   user-select: none;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-  transition: all 0.3s ease;
+  transition: box-shadow 0.3s ease;
 
   &:hover {
     background-color: $hover-color;
