@@ -1,13 +1,20 @@
 import { NgModule } from '@angular/core';
 import { HomeComponent } from './home.component';
 import { RouterModule, Routes } from '@angular/router';
-import { NgbNavModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbModalModule,
+  NgbNavModule,
+  NgbProgressbarModule,
+  NgbTooltipModule,
+} from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 
 import { IngredientsPipe } from '../../pipes/ingredients.pipe';
 
 import { ItemListComponent } from '../../components/item-list/item-list.component';
 import { EmptyListComponent } from '../../components/empty-list/empty-list.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AddItemFormComponent } from 'src/app/components/add-item-form/add-item-form.component';
 const routes: Routes = [
   {
     path: '',
@@ -17,8 +24,11 @@ const routes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
+    NgbModalModule,
     NgbNavModule,
     NgbTooltipModule,
+    NgbProgressbarModule,
+    ReactiveFormsModule,
     RouterModule.forChild(routes),
   ],
   declarations: [
@@ -26,6 +36,7 @@ const routes: Routes = [
     ItemListComponent,
     EmptyListComponent,
     IngredientsPipe,
+    AddItemFormComponent,
   ],
 })
 export class HomeModule {}

@@ -9,9 +9,17 @@ import {
   tap,
 } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { BeerInterface } from 'src/app/models/beer.interface';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { ItemService } from 'src/app/services/item.service';
+import {
+  BeerForm,
+  BeerInterface,
+  UserBeerInterface,
+} from '../../models/beer.interface';
+import { ItemService } from '../../services/item.service';
+import { AddItemFormComponent } from '../../components/add-item-form/add-item-form.component';
+import { LoggerService } from '../../services/logger.service';
 
 enum Tabs {
   ALL_BEERS = 1,
@@ -27,12 +35,20 @@ enum Tabs {
 export class HomeComponent implements OnInit {
   public active = Tabs.MY_BEERS;
   public isloading = false;
+  public beerForm: FormGroup<BeerForm>;
   public items$: Observable<Array<BeerInterface>>;
   private currentPage$: BehaviorSubject<number> = new BehaviorSubject(1);
 
-  constructor(private itemService: ItemService) {}
+  constructor(
+    private itemService: ItemService,
+    private modalService: NgbModal,
+    private fb: FormBuilder,
+    private logger: LoggerService
+  ) {}
 
   ngOnInit(): void {
+    this.buildForm();
+
     this.items$ = this.currentPage$.pipe(
       distinctUntilChanged(),
       switchMap((currentPage) => {
@@ -51,6 +67,36 @@ export class HomeComponent implements OnInit {
   }
 
   onAddItem() {
-    console.log('OPEN MODAL');
+    const modalRef = this.modalService.open(AddItemFormComponent, {
+      centered: true,
+    });
+    modalRef.componentInstance.itemForm = this.beerForm;
+    modalRef.componentInstance.addNewItem.subscribe((add: boolean) => {
+      if (!add) {
+        return;
+      }
+
+      modalRef.componentInstance.isSaving = true;
+      try {
+        this.itemService.addUserItem(this.beerForm.value as UserBeerInterface);
+        this.beerForm.reset();
+        modalRef.close();
+        //Todo: Show added alert
+      } catch (err) {
+        this.logger.info(`Error while adding a new Beer! ${err}`);
+        //Todo: Show error alert
+
+        modalRef.componentInstance.isSaving = false;
+      }
+    });
+  }
+
+  private buildForm() {
+    this.beerForm = this.fb.nonNullable.group({
+      name: ['', [Validators.required, Validators.minLength(3)]],
+      tagline: ['', [Validators.required, Validators.minLength(3)]],
+      description: ['', [Validators.required, Validators.minLength(3)]],
+      image_url: ['../../../assets/beer.jpg', [Validators.required]],
+    });
   }
 }
