@@ -8,6 +8,8 @@
       (click)="activeModal.dismiss('Cross click')"
     ></button>
   </div>
+  <ngb-progressbar *ngIf="isSaving" [value]="100"></ngb-progressbar>
+
   <div class="modal-body">
     <div class="text-left">
       <img
@@ -45,9 +47,20 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="onClear()">
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      [disabled]="itemForm.pristine || isSaving"
+      (click)="onClear()"
+    >
       Clear
     </button>
-    <button type="submit" class="btn btn-primary">Add Beer</button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="itemForm.invalid || isSaving"
+    >
+      {{ isSaving ? "Adding..." : "Add Beer" }}
+    </button>
   </div>
 </form>

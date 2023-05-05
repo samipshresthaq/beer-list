@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbActiveModal,
+  NgbProgressbarConfig,
+} from '@ng-bootstrap/ng-bootstrap';
 import { BeerForm } from 'src/app/models/beer.interface';
 
 @Component({
@@ -10,17 +13,26 @@ import { BeerForm } from 'src/app/models/beer.interface';
 })
 export class AddItemFormComponent {
   @Input() itemForm: FormGroup<BeerForm>;
+  @Input() isSaving: boolean = false;
 
-  @Output() addItem: EventEmitter<FormGroup> = new EventEmitter();
+  @Output() addNewItem: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(public activeModal: NgbActiveModal) {}
+  constructor(
+    public activeModal: NgbActiveModal,
+    config: NgbProgressbarConfig
+  ) {
+    config.max = 100;
+    config.striped = true;
+    config.animated = true;
+    config.type = 'success';
+    config.height = '5px';
+  }
 
   onAddItem() {
     if (this.itemForm.invalid) {
-      console.log(this.itemForm.value);
       return;
     }
-    this.addItem.emit(this.itemForm);
+    this.addNewItem.emit(true);
   }
 
   onClear() {
