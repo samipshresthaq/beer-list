@@ -1,0 +1,53 @@
+<form (ngSubmit)="onAddItem()" [formGroup]="itemForm">
+  <div class="modal-header">
+    <h4 class="modal-title">Add a new Beer</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <div class="text-left">
+      <img
+        [src]="itemForm.value.image_url"
+        class="item-img rounded d-block mb-3 p-2"
+        alt="Beer Image"
+      />
+    </div>
+    <div class="form-group mb-2">
+      <input
+        ngbAutofocus
+        type="text"
+        class="form-control"
+        aria-describedby="name"
+        formControlName="name"
+        placeholder="Beer name"
+      />
+    </div>
+    <div class="form-group mb-2">
+      <input
+        type="text"
+        class="form-control"
+        formControlName="tagline"
+        aria-describedby="genre"
+        placeholder="Genre"
+      />
+    </div>
+    <div class="form-group">
+      <textarea
+        class="form-control"
+        id="description-text"
+        formControlName="description"
+        placeholder="Description"
+      ></textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="onClear()">
+      Clear
+    </button>
+    <button type="submit" class="btn btn-primary">Add Beer</button>
+  </div>
+</form>
