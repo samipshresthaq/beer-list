@@ -5,6 +5,7 @@ import {
   NgbModalModule,
   NgbNavModule,
   NgbProgressbarModule,
+  NgbToastModule,
   NgbTooltipModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
@@ -28,6 +29,7 @@ const routes: Routes = [
     NgbNavModule,
     NgbTooltipModule,
     NgbProgressbarModule,
+    NgbToastModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
   ],

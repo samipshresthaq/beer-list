@@ -50,3 +50,24 @@
 <ng-template #emptyTemplate>
   <app-empty-list (addItem)="onAddItem()"></app-empty-list>
 </ng-template>
+
+<div
+  *ngIf="showToast"
+  class="toast"
+  class="toast-container position-fixed bottom-0 end-0 p-3"
+  style="z-index: 1200"
+>
+  <ngb-toast
+    [autohide]="autohideToast"
+    [delay]="5000"
+    (mouseenter)="autohideToast = false"
+    (mouseleave)="autohideToast = true"
+    header="Notification"
+    style="z-index: 1200"
+    class="text-light"
+    [class]="'bg-' + (toastType ? toastType : 'primary')"
+    (hidden)="showToast = false; autohideToast = true"
+  >
+    {{ toastMessage }}
+  </ngb-toast>
+</div>

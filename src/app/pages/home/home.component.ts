@@ -27,6 +27,8 @@ enum Tabs {
   MY_BEERS = 2,
 }
 
+type ToastType = 'primary' | 'success' | 'danger' | 'warning' | 'info';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -36,6 +38,10 @@ enum Tabs {
 export class HomeComponent implements OnInit {
   public active = Tabs.MY_BEERS;
   public isloading = false;
+  public autohideToast = true;
+  public showToast = false;
+  public toastType: ToastType = 'primary';
+  public toastMessage: string;
   public beerForm: FormGroup<BeerForm>;
   public items$: Observable<Array<BeerInterface>>;
   public userItems$: Observable<Array<UserBeerInterface>>;
@@ -89,18 +95,30 @@ export class HomeComponent implements OnInit {
 
       modalRef.componentInstance.isSaving = true;
       try {
+        const newBeerName = this.beerForm.value.name;
         this.itemService.addUserItem(this.beerForm.value as UserBeerInterface);
         this.beerForm.reset();
         this.refreshUserPage$.next(true);
         modalRef.close();
-        //Todo: Show added alert
+
+        this.dislayToast(`${newBeerName} added successfully!`, 'success');
       } catch (err) {
         this.logger.info(`Error while adding a new Beer! ${err}`);
-        //Todo: Show error alert
+
+        this.dislayToast(
+          `Adding ${this.beerForm.value.name} failed!`,
+          'danger'
+        );
 
         modalRef.componentInstance.isSaving = false;
       }
     });
+  }
+
+  dislayToast(message: string, type: ToastType) {
+    this.toastMessage = message;
+    this.showToast = true;
+    this.toastType = type;
   }
 
   private buildForm() {
