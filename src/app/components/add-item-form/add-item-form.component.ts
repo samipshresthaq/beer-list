@@ -28,14 +28,14 @@ export class AddItemFormComponent {
     config.height = '5px';
   }
 
-  onAddItem() {
+  onAddItem(): void {
     if (this.itemForm.invalid) {
       return;
     }
     this.addNewItem.emit(true);
   }
 
-  onClear() {
+  onClear(): void {
     this.itemForm.reset();
   }
 }

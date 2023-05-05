@@ -3,6 +3,13 @@
   *ngFor="let item of items; index as idx; trackBy: trackByItems"
 >
   <div class="card p-2 p-md-4" [class.mt-4]="idx != 0">
+    <span
+      *ngIf="allowDelete"
+      class="position-absolute top-0 end-0 p-3 text-danger"
+      style="z-index: 2"
+      (click)="onItemDelete(item.id)"
+      >&times;</span
+    >
     <img
       class="card-img"
       [src]="item.image_url"

@@ -11,15 +11,19 @@ export class LocalStorageService {
   get<T>(key): Array<T> {
     return JSON.parse(this.storage.getItem(key)) as Array<T>;
   }
-  set<T>(key, value) {
+  set<T>(key, value): void {
     const currentValue: Array<T> = this.get(key) || [];
     const uodatedValue = [...currentValue, value];
     this.storage.setItem(key, JSON.stringify(uodatedValue));
   }
-  remove(key) {
+
+  setBulk<T>(key, bulkItem): void {
+    this.storage.setItem(key, JSON.stringify(bulkItem));
+  }
+  remove(key): void {
     this.storage.removeItem(key);
   }
-  clear() {
+  clear(): void {
     this.storage.clear();
   }
 }

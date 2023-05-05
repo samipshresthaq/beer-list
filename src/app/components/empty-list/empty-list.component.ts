@@ -8,7 +8,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class EmptyListComponent {
   @Output() public addItem = new EventEmitter<void>();
 
-  onAdd() {
+  onAdd(): void {
     this.addItem.emit();
   }
 }

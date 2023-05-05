@@ -9,6 +9,7 @@ import { LocalStorageService } from './localStorage.service';
 import { v4 as uuidv4 } from 'uuid';
 
 const API = 'https://api.punkapi.com/v2/beers';
+export const STORE_KEY = 'myBeers';
 
 @Injectable({
   providedIn: 'root',
@@ -32,21 +33,22 @@ export class ItemService {
   }
 
   getUserItems(): Array<UserBeerInterface> {
-    return this.localStorage.get<UserBeerInterface>('myBeers') || [];
+    return this.localStorage.get<UserBeerInterface>(STORE_KEY);
   }
 
   addUserItem(item: UserBeerInterface): void {
     item.id = uuidv4();
     item.created = new Date();
-    this.localStorage.set<UserBeerInterface>('myBeers', item);
+    this.localStorage.set<UserBeerInterface>(STORE_KEY, item);
   }
 
   removeUserItem(id: string): void {
     let existingItems = this.getUserItems();
     existingItems = existingItems.filter((item) => item.id !== id);
+    this.localStorage.setBulk<UserBeerInterface>(STORE_KEY, existingItems);
   }
 
   cleanMyItems(): void {
-    this.localStorage.clear();
+    this.localStorage.remove(STORE_KEY);
   }
 }

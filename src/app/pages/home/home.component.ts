@@ -10,7 +10,7 @@ import {
   tap,
 } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import {
@@ -78,12 +78,12 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  loadMoreBeers() {
+  loadMoreBeers(): void {
     this.isloading = true;
     this.currentPage$.next(this.currentPage$.value + 1);
   }
 
-  onAddItem() {
+  onAddItem(): void {
     const modalRef = this.modalService.open(AddItemFormComponent, {
       centered: true,
     });
@@ -93,39 +93,57 @@ export class HomeComponent implements OnInit {
         return;
       }
 
-      modalRef.componentInstance.isSaving = true;
-      try {
-        const newBeerName = this.beerForm.value.name;
-        this.itemService.addUserItem(this.beerForm.value as UserBeerInterface);
-        this.beerForm.reset();
-        this.refreshUserPage$.next(true);
-        modalRef.close();
-
-        this.dislayToast(`${newBeerName} added successfully!`, 'success');
-      } catch (err) {
-        this.logger.info(`Error while adding a new Beer! ${err}`);
-
-        this.dislayToast(
-          `Adding ${this.beerForm.value.name} failed!`,
-          'danger'
-        );
-
-        modalRef.componentInstance.isSaving = false;
-      }
+      this.handleNewItemAddtiion(modalRef);
     });
   }
 
-  dislayToast(message: string, type: ToastType) {
+  /**
+   * Handles new item addition
+   * @param modalRef Refrenece to bootstrap modal
+   */
+  handleNewItemAddtiion(modalRef: NgbModalRef): void {
+    modalRef.componentInstance.isSaving = true;
+    try {
+      const newBeerName = this.beerForm.value.name;
+      this.itemService.addUserItem(this.beerForm.value as UserBeerInterface);
+      this.beerForm.reset();
+      this.refreshUserPage$.next(true);
+      modalRef.close();
+
+      this.dislayToast(`${newBeerName} added successfully!`, 'success');
+    } catch (err) {
+      this.logger.info(`Error while adding a new Beer! ${err}`);
+
+      this.dislayToast(`Adding ${this.beerForm.value.name} failed!`, 'danger');
+
+      modalRef.componentInstance.isSaving = false;
+    }
+  }
+
+  dislayToast(message: string, type: ToastType): void {
     this.toastMessage = message;
     this.showToast = true;
     this.toastType = type;
   }
 
-  private buildForm() {
+  onRemoveItem(id: string): void {
+    this.itemService.removeUserItem(id);
+    this.refreshUserPage$.next(true);
+  }
+
+  clearAllItems(): void {
+    const modalRef = this.modalService.open('Are you sure?', {
+      centered: true,
+    });
+    this.itemService.cleanMyItems();
+    this.refreshUserPage$.next(true);
+  }
+
+  private buildForm(): void {
     this.beerForm = this.fb.nonNullable.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      tagline: ['', [Validators.required, Validators.minLength(3)]],
-      description: ['', [Validators.required, Validators.minLength(3)]],
+      name: ['', [Validators.required]],
+      tagline: ['', [Validators.required]],
+      description: ['', [Validators.required]],
       image_url: ['../../../assets/beer.jpg', [Validators.required]],
     });
   }

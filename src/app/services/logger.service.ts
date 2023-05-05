@@ -4,16 +4,16 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class LoggerService {
-  log(message: string) {
+  log(message: string): void {
     console.log(message);
   }
-  error(message: string) {
+  error(message: string): void {
     console.error(message);
   }
-  warn(message: string) {
+  warn(message: string): void {
     console.warn(message);
   }
-  info(message: string) {
+  info(message: string): void {
     console.info(message);
   }
 }

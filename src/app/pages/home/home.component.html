@@ -32,7 +32,20 @@
         <button ngbNavLink>My Beers</button>
         <ng-template ngbNavContent>
           <ng-container *ngIf="userItems$ | async as items; else emptyTemplate">
-            <app-item-list [items]="items"></app-item-list>
+            <div *ngIf="items" class="text-right">
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-danger"
+                (click)="clearAllItems()"
+              >
+                Remove All
+              </button>
+            </div>
+            <app-item-list
+              [items]="items"
+              [allowDelete]="true"
+              (deleteItem)="onRemoveItem($event)"
+            ></app-item-list>
           </ng-container>
         </ng-template>
       </li>
