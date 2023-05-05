@@ -4,6 +4,7 @@ import {
   EMPTY,
   catchError,
   distinctUntilChanged,
+  of,
   retry,
   switchMap,
   tap,
@@ -37,7 +38,11 @@ export class HomeComponent implements OnInit {
   public isloading = false;
   public beerForm: FormGroup<BeerForm>;
   public items$: Observable<Array<BeerInterface>>;
+  public userItems$: Observable<Array<UserBeerInterface>>;
   private currentPage$: BehaviorSubject<number> = new BehaviorSubject(1);
+  private refreshUserPage$: BehaviorSubject<boolean> = new BehaviorSubject(
+    true
+  );
 
   constructor(
     private itemService: ItemService,
@@ -57,6 +62,12 @@ export class HomeComponent implements OnInit {
           retry(2),
           catchError(() => EMPTY)
         );
+      })
+    );
+
+    this.userItems$ = this.refreshUserPage$.pipe(
+      switchMap((_) => {
+        return of(this.itemService.getUserItems());
       })
     );
   }
@@ -80,6 +91,7 @@ export class HomeComponent implements OnInit {
       try {
         this.itemService.addUserItem(this.beerForm.value as UserBeerInterface);
         this.beerForm.reset();
+        this.refreshUserPage$.next(true);
         modalRef.close();
         //Todo: Show added alert
       } catch (err) {

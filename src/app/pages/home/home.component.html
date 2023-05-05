@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container mb-5">
   <h2>Beer Admin</h2>
 
   <div class="d-flex">
@@ -15,7 +15,7 @@
           <ng-container *ngIf="items$ | async as items">
             <app-item-list [items]="items"></app-item-list>
 
-            <div class="load-more my-5">
+            <div class="load-more mt-5">
               <button
                 type="button"
                 class="btn btn-link"
@@ -31,7 +31,9 @@
       <li [ngbNavItem]="2">
         <button ngbNavLink>My Beers</button>
         <ng-template ngbNavContent>
-          <app-empty-list (addItem)="onAddItem()"></app-empty-list>
+          <ng-container *ngIf="userItems$ | async as items; else emptyTemplate">
+            <app-item-list [items]="items"></app-item-list>
+          </ng-container>
         </ng-template>
       </li>
     </ul>
@@ -45,3 +47,6 @@
 </div>
 
 <ng-template #loading> <strong> Loading... </strong></ng-template>
+<ng-template #emptyTemplate>
+  <app-empty-list (addItem)="onAddItem()"></app-empty-list>
+</ng-template>
