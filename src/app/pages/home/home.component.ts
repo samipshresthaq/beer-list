@@ -4,6 +4,7 @@ import {
   EMPTY,
   catchError,
   distinctUntilChanged,
+  map,
   of,
   retry,
   switchMap,
@@ -21,6 +22,7 @@ import {
 import { ItemService } from '../../services/item.service';
 import { AddItemFormComponent } from '../../components/add-item-form/add-item-form.component';
 import { LoggerService } from '../../services/logger.service';
+import { AlertItemComponent } from 'src/app/components/alert-item/alert-item.component';
 
 enum Tabs {
   ALL_BEERS = 1,
@@ -36,7 +38,7 @@ type ToastType = 'primary' | 'success' | 'danger' | 'warning' | 'info';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit {
-  public active = Tabs.MY_BEERS;
+  public active = Tabs.ALL_BEERS;
   public isloading = false;
   public autohideToast = true;
   public showToast = false;
@@ -73,7 +75,9 @@ export class HomeComponent implements OnInit {
 
     this.userItems$ = this.refreshUserPage$.pipe(
       switchMap((_) => {
-        return of(this.itemService.getUserItems());
+        return of(this.itemService.getUserItems()).pipe(
+          map((items) => (items.length > 0 ? items : null))
+        );
       })
     );
   }
@@ -127,16 +131,40 @@ export class HomeComponent implements OnInit {
   }
 
   onRemoveItem(id: string): void {
-    this.itemService.removeUserItem(id);
-    this.refreshUserPage$.next(true);
+    const modalRef = this.showAlert(
+      'Delete item?',
+      'Are you sure? This action cannot be undone.'
+    );
+    modalRef.componentInstance.confirm.subscribe(() => {
+      this.itemService.removeUserItem(id);
+      this.refreshUserPage$.next(true);
+      modalRef.close();
+      this.dislayToast(`Beer removed successfully!`, 'success');
+    });
   }
 
   clearAllItems(): void {
-    const modalRef = this.modalService.open('Are you sure?', {
+    const modalRef = this.showAlert(
+      'Clear all items?',
+      'Are you sure? This action cannot be undone.'
+    );
+    modalRef.componentInstance.confirm.subscribe(() => {
+      this.itemService.cleanMyItems();
+      this.refreshUserPage$.next(true);
+      modalRef.close();
+      this.dislayToast(`All beer cleared successfully!`, 'success');
+    });
+  }
+
+  showAlert(heading: string, message: string): NgbModalRef {
+    const modalRef = this.modalService.open(AlertItemComponent, {
       centered: true,
     });
-    this.itemService.cleanMyItems();
-    this.refreshUserPage$.next(true);
+
+    modalRef.componentInstance.heading = heading;
+    modalRef.componentInstance.message = message;
+
+    return modalRef;
   }
 
   private buildForm(): void {

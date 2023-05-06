@@ -33,7 +33,7 @@ export class ItemService {
   }
 
   getUserItems(): Array<UserBeerInterface> {
-    return this.localStorage.get<UserBeerInterface>(STORE_KEY);
+    return this.localStorage.get<UserBeerInterface>(STORE_KEY) || [];
   }
 
   addUserItem(item: UserBeerInterface): void {

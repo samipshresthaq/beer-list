@@ -19,7 +19,7 @@ export class AddItemFormComponent {
 
   constructor(
     public activeModal: NgbActiveModal,
-    config: NgbProgressbarConfig
+    public config: NgbProgressbarConfig
   ) {
     config.max = 100;
     config.striped = true;

@@ -16,6 +16,7 @@ import { ItemListComponent } from '../../components/item-list/item-list.componen
 import { EmptyListComponent } from '../../components/empty-list/empty-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AddItemFormComponent } from 'src/app/components/add-item-form/add-item-form.component';
+import { AlertItemComponent } from 'src/app/components/alert-item/alert-item.component';
 const routes: Routes = [
   {
     path: '',
@@ -34,6 +35,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
   ],
   declarations: [
+    AlertItemComponent,
     HomeComponent,
     ItemListComponent,
     EmptyListComponent,
