@@ -31,6 +31,8 @@ enum Tabs {
 
 type ToastType = 'primary' | 'success' | 'danger' | 'warning' | 'info';
 
+const BEER_IMAGE_PATH = './assets/beer.jpg';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -172,7 +174,7 @@ export class HomeComponent implements OnInit {
       name: ['', [Validators.required]],
       tagline: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      image_url: ['../../../assets/beer.jpg', [Validators.required]],
+      image_url: [BEER_IMAGE_PATH, [Validators.required]],
     });
   }
 }
